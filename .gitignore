@@ -1,0 +1,13 @@
+**/target/
+**/jee-*/
+**/eclipse-*/
+**/.settings/
+**/local/
+**/.gradle/
+**/bin/
+**/build/
+**/*.pptx
+**/application-prod.properties
+**/.angular/
+**/package-lock.json
+**/node_modules/
