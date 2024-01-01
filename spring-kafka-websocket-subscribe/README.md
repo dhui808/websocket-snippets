@@ -1,4 +1,5 @@
 ## Spring Boot, Spring for Apache Kafka, WebSocket - Part 3
+	SessionSubscribeEvent is raised when a new WebSocket client using a Simple Messaging Protocol (e.g. STOMP) sends a subscription request.
 
 	Using SessionSubscribeEvent to create Kafka listener dynamically.
 	

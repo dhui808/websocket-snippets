@@ -1,5 +1,7 @@
 ## Spring Boot, Spring for Apache Kafka, WebSocket - Part 4
 
+	SessionSubscribeEvent is raised when a new WebSocket client using a Simple Messaging Protocol (e.g. STOMP) sends a subscription request.
+
 	This is the right way of dynamically starting and stopping Kafka listener container.
 	
 	https://stackoverflow.com/questions/69160889/spring-kafka-close-the-container-and-read-the-messages-from-specific-offset-wit
