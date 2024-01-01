@@ -1,13 +1,18 @@
-## Spring Boot, Spring for Apache Kafka, WebSocket - Part 3
+## Spring Boot, Spring for Apache Kafka, WebSocket - Part 4
 
-	Using SessionSubscribeEvent to create Kafka listener dynamically.
+	This is the right way of dynamically starting and stopping Kafka listener container.
 	
-	Use either SubscribeKafkaMessageListener (uncomment code)or
-	SubscribeApplicationListener.
+	https://stackoverflow.com/questions/69160889/spring-kafka-close-the-container-and-read-the-messages-from-specific-offset-wit
 	
-	Note:
-	The approach used in spring-kafka-websocket-registry is the right way for dynamically starting and stopping Kafka listener container.
+	https://bikas-katwal.medium.com/start-stop-kafka-consumers-or-subscribe-to-new-topic-programmatically-using-spring-kafka-2d4fb77c9117
+
+### How to make sure offset is always 0?
+
+	ConcurrentMessageListenerContainer<String, String> container =
+                this.factory.createContainer(new TopicPartitionOffset(topic, 0, 0L, false));
 	
+	Note, TopicPartitionOffset needs to be created with relativeToCurrent = false (the fourth parameter in the constructor).
+	  	
 ### Start Kafka with the -d option to run in detached mode
 
 	docker-compose up -d

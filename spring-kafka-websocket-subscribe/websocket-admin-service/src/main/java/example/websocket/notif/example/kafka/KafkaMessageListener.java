@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.PartitionOffset;
 import org.springframework.kafka.annotation.TopicPartition;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Headers;
@@ -17,6 +18,8 @@ public class KafkaMessageListener  {
 
 	private SimpMessagingTemplate simpMessagingTemplate;
 
+	private ConcurrentKafkaListenerContainerFactory<String, String> concurrentKafkaListenerContainerFactory;
+	
     public String getId() {
         return this.id;
     }
@@ -24,10 +27,12 @@ public class KafkaMessageListener  {
     public String getTopic() {
         return this.topic;
     }
-	public KafkaMessageListener(String id, String topic, SimpMessagingTemplate simpMessagingTemplate) {
+	public KafkaMessageListener(String id, String topic, SimpMessagingTemplate simpMessagingTemplate,
+			ConcurrentKafkaListenerContainerFactory<String, String> concurrentKafkaListenerContainerFactory) {
 		this.id = id;
         this.topic = topic;
         this.simpMessagingTemplate = simpMessagingTemplate;
+        this.concurrentKafkaListenerContainerFactory = concurrentKafkaListenerContainerFactory;
 	}
 	
 	@KafkaListener(containerFactory = "concurrentKafkaListenerContainerFactory", topicPartitions =
@@ -41,9 +46,14 @@ public class KafkaMessageListener  {
     		String message) {
 
         System.out.println("Received Json Message in groupId='" + group + "'," + message + ", offset=" + os + ", receivedpartition=" + receivedpartition);
-        
+//        if (null == simpMessagingTemplate) {
+//        	System.out.println("simpMessagingTemplate is null. do nothing.");
+//        	return;
+//        }
         String[] messageArray  = message.split(";");
         simpMessagingTemplate.convertAndSend("/topic/greetings/"+ messageArray[1], messageArray[0]);
-        System.out.println("message = " + message);
+        System.out.println("message is sent: " + message);
+        
+        //concurrentKafkaListenerContainerFactory.
     }
 }

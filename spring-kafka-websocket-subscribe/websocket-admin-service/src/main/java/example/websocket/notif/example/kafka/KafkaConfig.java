@@ -1,6 +1,7 @@
 package example.websocket.notif.example.kafka;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.Uuid;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -23,10 +24,13 @@ public class KafkaConfig {
 	@Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 	
+	@Autowired
+	private ConcurrentKafkaListenerContainerFactory<String,String> concurrentKafkaListenerContainerFactory;
+	
     public ConsumerFactory<String, String> consumerFactory() {
         Map<String, Object> config = new HashMap<>();
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
-        config.put(ConsumerConfig.GROUP_ID_CONFIG, "mygroup");
+        config.put(ConsumerConfig.GROUP_ID_CONFIG, Uuid.randomUuid().toString());
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         return new DefaultKafkaConsumerFactory<>(config);
@@ -42,6 +46,7 @@ public class KafkaConfig {
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     KafkaMessageListener multiTypeMessageListener(String id, String topic) {
-        return new KafkaMessageListener(id, topic, simpMessagingTemplate);
+    	System.out.println("Creating multiTypeMessageListener: id=" + id + ", topic=" + topic);
+        return new KafkaMessageListener(id, topic, simpMessagingTemplate, concurrentKafkaListenerContainerFactory);
     }
 }

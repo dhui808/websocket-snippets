@@ -1,5 +1,9 @@
-## Spring Boot, Spring for Apache Kafka, WebSocket
+## Spring Boot, Spring for Apache Kafka, WebSocket - Part 2
+
 	Override configureClientInboundChannel to create Kafka listener dynamically.
+	
+	Note:
+	The approach used in spring-kafka-websocket-registry is the right way for dynamically starting and stopping Kafka listener container.
 	
 ### Start Kafka with the -d option to run in detached mode
 	docker-compose up -d
